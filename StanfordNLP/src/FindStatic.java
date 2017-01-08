@@ -24,6 +24,7 @@ public class FindStatic  extends SwingWorker<String, String>{
 	public static Map<String, Integer> yearMap = new HashMap<String, Integer>();
 	public static Map<String, Integer> dayMap = new HashMap<String, Integer>();
 	public static String sum;
+	public static String fileName;
 
 
 
@@ -41,6 +42,7 @@ public class FindStatic  extends SwingWorker<String, String>{
 
 		return maxEntry.getKey();
 	}
+	
 
 	public void createDisasters() {
 		FindStatic.disasters.add("hurricane");
@@ -195,22 +197,37 @@ public class FindStatic  extends SwingWorker<String, String>{
 		        }
 		    }
 	}
+	
+	public void clearMaps() {
+		
+		whenMap.clear();
+		whereMap.clear();
+		whatMap.clear();
+		diedMap.clear();
+		injureMap.clear();
+		trapMap.clear();
+		yearMap.clear();
+		dayMap.clear();
+	}
 
 	@Override
 	protected String doInBackground() throws Exception {
 
-		
+		clearMaps();
 		createDisasters();
 		createMonths();
 		File file = null;
+		String summarize = "";
+		String dataSet = FindStatic.fileName.toString();
 
-		String dataSet = MainWindow.dataSet.getSelectedItem().toString();
+		MainWindow.sumText.setText("");
 		
-		if(dataSet == "Nepal") {
-		    file = new File("data/nepal_etiketli.txt");
-		}else if(dataSet == "Nagano") {
+		if(dataSet.equals("Nagano")) {
 			file = new File("data/nagano.txt");
+		}else {
+		    file = new File("data/nepal_etiketli.txt");
 		}
+		
 		
 		
 
@@ -230,19 +247,6 @@ public class FindStatic  extends SwingWorker<String, String>{
 
 			}
 
-			String what = findMaxFromMap(whatMap);
-			String where = findMaxFromMap(whereMap);
-			String when = findMaxFromMap(whenMap);
-			String day = findMaxFromMap(dayMap);
-			String year = findMaxFromMap(yearMap);
-			String die = findMaxFromMap(diedMap);
-			String injure = findMaxFromMap(injureMap);
-			String trap = findMaxFromMap(trapMap);
-			
-			FindStatic.sum = "This is " + what.toUpperCase() + " in " + where.toUpperCase() + " at " + day + "/"
-					+ when.toUpperCase() + "/" + year + "\n" + die + "\n" + injure + "\n" + trap;
-
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -251,14 +255,30 @@ public class FindStatic  extends SwingWorker<String, String>{
 			e.printStackTrace();
 		}
 		
+		String what = findMaxFromMap(whatMap);
+		String where = findMaxFromMap(whereMap);
+		String when = findMaxFromMap(whenMap);
+		String day = findMaxFromMap(dayMap);
+		String year = findMaxFromMap(yearMap);
+		String die = findMaxFromMap(diedMap);
+		String injure = findMaxFromMap(injureMap);
+		String trap = findMaxFromMap(trapMap);
 		
-		return sum;
+		
+		
+		summarize = "This is " + what.toUpperCase() + " in " + where.toUpperCase() + " at " + day + "/"
+				+ when.toUpperCase() + "/" + year + "\n" + die + "\n" + injure + "\n" + trap;
+		
+		FindStatic.sum = summarize;
+		
+		return null;
 	}
 
 	@Override
 	protected void done() {
 		// TODO Auto-generated method stub
 		MainWindow.sumText.setText(FindStatic.sum);
+		MainWindow.sumText.repaint();
 		super.done();
 	}
 	

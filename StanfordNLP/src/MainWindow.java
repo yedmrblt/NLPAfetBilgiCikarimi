@@ -14,16 +14,22 @@ import javax.swing.JButton;
 import java.awt.Insets;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
 
 public class MainWindow {
 
 	private JFrame frame;
 	public static JComboBox<String> dataSet;
 	public static JTextArea sumText; 
+	public static JTextArea cosineResult;
 
 	/**
 	 * Launch the application.
@@ -77,8 +83,11 @@ public class MainWindow {
 		JButton startSumButton = new JButton("Summarize");
 		startSumButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainWindow.sumText.setText("");
+				FindStatic.fileName = MainWindow.dataSet.getSelectedItem().toString();
+				FindStatic.fileName = MainWindow.dataSet.getSelectedItem().toString();
+				FindValuableTweets findValueable = new FindValuableTweets();
 				FindStatic findst = new FindStatic();
+				findValueable.execute();
 			    findst.execute();
 			}
 		});
@@ -91,24 +100,7 @@ public class MainWindow {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel staticPane = new JPanel();
-		tabbedPane.addTab("Static", null, staticPane, null);
-		GridBagLayout gbl_staticPane = new GridBagLayout();
-		gbl_staticPane.columnWidths = new int[]{0, 0};
-		gbl_staticPane.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_staticPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_staticPane.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
-		staticPane.setLayout(gbl_staticPane);
-		
-		sumText = new JTextArea();
-		sumText.setEditable(false);
-		GridBagConstraints gbc_sumText = new GridBagConstraints();
-		gbc_sumText.gridheight = 3;
-		gbc_sumText.insets = new Insets(0, 0, 5, 0);
-		gbc_sumText.fill = GridBagConstraints.BOTH;
-		gbc_sumText.gridx = 0;
-		gbc_sumText.gridy = 0;
-		staticPane.add(sumText, gbc_sumText);
+
 		
 		JPanel stanfordPane = new JPanel();
 		tabbedPane.addTab("Stanford", null, stanfordPane, null);
@@ -126,6 +118,62 @@ public class MainWindow {
 		gbc_stanfordSumText.gridx = 0;
 		gbc_stanfordSumText.gridy = 1;
 		stanfordPane.add(stanfordSumText, gbc_stanfordSumText);
+		
+		JPanel staticPane = new JPanel();
+		tabbedPane.addTab("Frequency", null, staticPane, null);
+		GridBagLayout gbl_staticPane = new GridBagLayout();
+		gbl_staticPane.columnWidths = new int[]{0, 0};
+		gbl_staticPane.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_staticPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_staticPane.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		staticPane.setLayout(gbl_staticPane);
+		
+		JPanel staticPanel = new JPanel();
+		GridBagConstraints gbc_staticPanel = new GridBagConstraints();
+		gbc_staticPanel.gridheight = 4;
+		gbc_staticPanel.fill = GridBagConstraints.BOTH;
+		gbc_staticPanel.gridx = 0;
+		gbc_staticPanel.gridy = 0;
+		staticPane.add(staticPanel, gbc_staticPanel);
+		staticPanel.setLayout(new BorderLayout(0, 0));
+		
+		JScrollPane scrollPaneStatic = new JScrollPane(sumText);
+		staticPanel.add(scrollPaneStatic);
+		scrollPaneStatic.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+		
+		sumText = new JTextArea();
+		scrollPaneStatic.setViewportView(sumText);
+		sumText.setEditable(false);
+		
+		JPanel cosinePane = new JPanel();
+		tabbedPane.addTab("Cosine", null, cosinePane, null);
+		GridBagLayout gbl_cosinePane = new GridBagLayout();
+		gbl_cosinePane.columnWidths = new int[] {0, 0, 0, 0, 0};
+		gbl_cosinePane.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+		gbl_cosinePane.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_cosinePane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		cosinePane.setLayout(gbl_cosinePane);
+		
+		JPanel cosinePanel = new JPanel();
+		GridBagConstraints gbc_cosinePanel = new GridBagConstraints();
+		gbc_cosinePanel.gridwidth = 4;
+		gbc_cosinePanel.gridheight = 5;
+		gbc_cosinePanel.insets = new Insets(0, 0, 5, 5);
+		gbc_cosinePanel.fill = GridBagConstraints.BOTH;
+		gbc_cosinePanel.gridx = 0;
+		gbc_cosinePanel.gridy = 0;
+		cosinePane.add(cosinePanel, gbc_cosinePanel);
+		cosinePanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		
+		JScrollPane scrollPaneCosine = new JScrollPane();
+		cosinePanel.add(scrollPaneCosine);
+		scrollPaneCosine.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+		
+		cosineResult = new JTextArea();
+		cosinePanel.add(scrollPaneCosine);
+		
+		scrollPaneCosine.setViewportView(cosineResult);
 	}
 
 }
