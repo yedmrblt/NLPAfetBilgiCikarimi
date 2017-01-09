@@ -30,6 +30,7 @@ public class MainWindow {
 	public static JComboBox<String> dataSet;
 	public static JTextArea sumText; 
 	public static JTextArea cosineResult;
+	public static JTextArea stanfordSumText;
 
 	/**
 	 * Launch the application.
@@ -87,8 +88,10 @@ public class MainWindow {
 				FindStatic.fileName = MainWindow.dataSet.getSelectedItem().toString();
 				FindValuableTweets findValueable = new FindValuableTweets();
 				FindStatic findst = new FindStatic();
+				FindStanford findStanford = new FindStanford();
 				findValueable.execute();
 			    findst.execute();
+			    findStanford.execute();
 			}
 		});
 		GridBagConstraints gbc_startSumButton = new GridBagConstraints();
@@ -111,7 +114,7 @@ public class MainWindow {
 		gbl_stanfordPane.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		stanfordPane.setLayout(gbl_stanfordPane);
 		
-		JTextArea stanfordSumText = new JTextArea();
+		stanfordSumText = new JTextArea();
 		stanfordSumText.setEditable(false);
 		GridBagConstraints gbc_stanfordSumText = new GridBagConstraints();
 		gbc_stanfordSumText.fill = GridBagConstraints.BOTH;
