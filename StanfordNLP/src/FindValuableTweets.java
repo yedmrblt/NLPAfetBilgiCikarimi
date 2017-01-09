@@ -97,19 +97,37 @@ public class FindValuableTweets extends SwingWorker<String, String>{
 		String valuableWords = "die died death injure injured injuring people trap trapped destroyed rubble";
 
 		MainWindow.sumText.setText("");
+		int nepalCount = 186939;
+		int naganoCount = 2291;
+		int progressTotal = 0;
 		
 		if(dataSet.equals("Nagano")) {
 			file = new File("data/nagano.txt");
+			progressTotal = naganoCount;
 		}else {
 		    file = new File("data/nepal_etiketli.txt");
+		    progressTotal = nepalCount;
 		}
 		
-		
+		MainWindow.progressCosine.setValue(0);
+		int progressValue = 0;
 		
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;
 			while ((line = br.readLine()) != null) {
+				
+				progressValue = progressValue + 1;
+				
+				if(progressValue == progressTotal/4) {
+					MainWindow.progressStanford.setValue(20);
+				} else if (progressValue == progressTotal/2) {
+					MainWindow.progressStanford.setValue(50);
+				} else if(progressValue == progressTotal*3/4) {
+					MainWindow.progressStanford.setValue(75);
+				}
+				
+				
 				line = line.toLowerCase();
 				String[] words = line.split(" ");
 				ArrayList<String> wordList = new ArrayList<String>(Arrays.asList(words));
@@ -134,7 +152,7 @@ public class FindValuableTweets extends SwingWorker<String, String>{
 			tweetMap.replace(maxObject.getKey(),0.0);
 		}
 		
-		
+		 MainWindow.progressCosine.setValue(100);
 		 FindValuableTweets.tweets= topTen;
 		
 		return null;

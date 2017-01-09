@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
+import javax.swing.JProgressBar;
 
 public class MainWindow {
 
@@ -31,6 +32,9 @@ public class MainWindow {
 	public static JTextArea sumText; 
 	public static JTextArea cosineResult;
 	public static JTextArea stanfordSumText;
+	public static JProgressBar progressStanford;
+	public static JProgressBar progressFreq;
+	public static JProgressBar progressCosine;
 
 	/**
 	 * Launch the application.
@@ -67,9 +71,9 @@ public class MainWindow {
 		frame.getContentPane().add(panel, BorderLayout.WEST);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		dataSet = new JComboBox();
@@ -99,6 +103,26 @@ public class MainWindow {
 		gbc_startSumButton.gridx = 0;
 		gbc_startSumButton.gridy = 3;
 		panel.add(startSumButton, gbc_startSumButton);
+		
+		progressStanford = new JProgressBar();
+		GridBagConstraints gbc_progressStanford = new GridBagConstraints();
+		gbc_progressStanford.insets = new Insets(0, 0, 5, 0);
+		gbc_progressStanford.gridx = 0;
+		gbc_progressStanford.gridy = 5;
+		panel.add(progressStanford, gbc_progressStanford);
+		
+		progressFreq = new JProgressBar();
+		GridBagConstraints gbc_progressFreq = new GridBagConstraints();
+		gbc_progressFreq.insets = new Insets(0, 0, 5, 0);
+		gbc_progressFreq.gridx = 0;
+		gbc_progressFreq.gridy = 6;
+		panel.add(progressFreq, gbc_progressFreq);
+		
+		progressCosine = new JProgressBar();
+		GridBagConstraints gbc_progressCosine = new GridBagConstraints();
+		gbc_progressCosine.gridx = 0;
+		gbc_progressCosine.gridy = 7;
+		panel.add(progressCosine, gbc_progressCosine);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -174,6 +198,7 @@ public class MainWindow {
 		scrollPaneCosine.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 		
 		cosineResult = new JTextArea();
+		cosineResult.setEditable(false);
 		cosinePanel.add(scrollPaneCosine);
 		
 		scrollPaneCosine.setViewportView(cosineResult);

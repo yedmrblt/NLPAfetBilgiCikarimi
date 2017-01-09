@@ -42,6 +42,18 @@ public class FindStatic  extends SwingWorker<String, String>{
 
 		return maxEntry.getKey();
 	}
+	
+	public void clearMaps() {
+		
+		whenMap.clear();
+		whereMap.clear();
+		whatMap.clear();
+		diedMap.clear();
+		injureMap.clear();
+		trapMap.clear();
+		yearMap.clear();
+		dayMap.clear();
+	}
 
 	public void createDisasters() {
 		FindStatic.disasters.add("hurricane");
@@ -200,24 +212,45 @@ public class FindStatic  extends SwingWorker<String, String>{
 	@Override
 	protected String doInBackground() throws Exception {
 
-		
+		clearMaps();
 		createDisasters();
 		createMonths();
 		File file = null;
+		int nepalCount = 186939;
+		int naganoCount = 2291;
+		int progressTotal = 0;
 
 		String dataSet = MainWindow.dataSet.getSelectedItem().toString();
-		
 		if(dataSet == "Nepal") {
 		    file = new File("data/nepal_etiketli.txt");
+		    progressTotal = nepalCount;
 		}else if(dataSet == "Nagano") {
-			file = new File("data/nagano.txt");
+			file = new File("data/nagano.txt");	
+			progressTotal = naganoCount;
 		}
 		
 		
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;
+			MainWindow.progressFreq.setValue(0);
+			int progressValue = 0;
+			
+			
 			while ((line = br.readLine()) != null) {
+				
+				progressValue = progressValue + 1;
+				
+				if(progressValue == progressTotal/4) {
+					MainWindow.progressStanford.setValue(20);
+				} else if (progressValue == progressTotal/2) {
+					MainWindow.progressStanford.setValue(50);
+				} else if(progressValue == progressTotal*3/4) {
+					MainWindow.progressStanford.setValue(75);
+				}
+				
+				
+
 				line = line.toLowerCase();
 				String[] words = line.split(" ");
 				ArrayList<String> wordList = new ArrayList<String>(Arrays.asList(words));
@@ -240,6 +273,7 @@ public class FindStatic  extends SwingWorker<String, String>{
 			String injure = findMaxFromMap(injureMap);
 			String trap = findMaxFromMap(trapMap);
 			
+			MainWindow.progressFreq.setValue(100);
 			FindStatic.sum = "This is " + what.toUpperCase() + " in " + where.toUpperCase() + " at " + day + "/"
 					+ when.toUpperCase() + "/" + year + "\n" + die + "\n" + injure + "\n" + trap;
 

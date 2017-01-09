@@ -203,20 +203,41 @@ public class FindStanford extends SwingWorker<String, String>{
 	protected String doInBackground() throws Exception {
 		
 		File file = null;
-
+		MainWindow.stanfordSumText.setText("");
 		String dataSet = MainWindow.dataSet.getSelectedItem().toString();
+		int nepalCount = 186939;
+		int naganoCount = 2291;
+		int progressTotal = 0;
 		
 		if(dataSet == "Nepal") {
 		    file = new File("data/nepal_etiketli.txt");
+		    progressTotal = nepalCount;
 		}else if(dataSet == "Nagano") {
 			file = new File("data/nagano.txt");
+			progressTotal = naganoCount;
 		}
+		
+		MainWindow.progressStanford.setValue(0);
+		int progressValue = 0;
 		
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 			String line;
 			int i = 1;
+		
 			while ((line = br.readLine()) != null) {
+				
+				progressValue = progressValue + 1;
+				
+				if(progressValue == progressTotal/4) {
+					MainWindow.progressStanford.setValue(20);
+				} else if (progressValue == progressTotal/2) {
+					MainWindow.progressStanford.setValue(50);
+				} else if(progressValue == progressTotal*3/4) {
+					MainWindow.progressStanford.setValue(75);
+				}
+				
+				
 				line = line.toLowerCase();
 				i++;
 				System.out.println(i);
@@ -289,6 +310,8 @@ public class FindStanford extends SwingWorker<String, String>{
 			if (dateTime == null) {
 				dateTime = "";
 			}
+			
+			MainWindow.progressStanford.setValue(100);
 			
 			FindStanford.sum = "This is " + what.toUpperCase() + magnitude + " in " + where.toUpperCase() + " at " + dateTime + "\n" + die + injure + trap + miss;
 			System.out.println(FindStanford.sum);
